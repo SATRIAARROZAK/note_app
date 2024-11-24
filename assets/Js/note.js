@@ -1,64 +1,144 @@
-'use strict';
+document.addEventListener("DOMContentLoaded", () => {
+  const openModal = document.getElementById("openModal");
+  const closeModal = document.getElementById("closeModal");
+  const modal = document.getElementById("modal");
+  const btnSubmit = document.getElementById("btnSubmit");
+  const judulNote = document.getElementById("judulNote");
+  const isiNote = document.getElementById("isiNote");
+  const listItem = document.getElementById("listItem");
+  const deleteSelectedBtn = document.getElementById("deleteSelected");
+  const cancelSelectionBtn = document.getElementById("cancelSelection");
+  const resetSelectionBtn = document.getElementById("resetSelection");
+  const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+  const selectAllContainer = document.getElementById("selectAllContainer");
+  const actionButtons = document.getElementById("actionButtons");
 
-// Get modal elements
-const modal = document.getElementById("modal");
-const openModalButton = document.getElementById("openModal");
-const closeModalButton = document.getElementById("closeModal");
-const judulNote = document.getElementById('judulNote');
-const isiNote = document.getElementById('isiNote');
-const btnSubmit = document.getElementById('btnSubmit');
-const list = document.getElementById('list');
-// Open modal
-openModalButton.addEventListener("click", () => {
-  modal.style.display = "block";
-});
+  let longPressTimer;
 
-// Close modal
-closeModalButton.addEventListener("click", () => {
-  modal.style.display = "none";
-});
+  // Fungsi untuk membuka modal
+  openModal.addEventListener("click", () => {
+    modal.style.display = "block";
+  });
 
-// Close modal when clicking outside the modal content
-window.addEventListener("click", (event) => {
-  if (event.target === modal) {
+  // Fungsi untuk menutup modal
+  closeModal.addEventListener("click", () => {
     modal.style.display = "none";
+  });
+
+  // Fungsi untuk membuat catatan baru
+  btnSubmit.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    const judul = judulNote.value.trim();
+    const isi = isiNote.value.trim();
+    const date = new Date().toISOString().slice(0, 16).replace("T", " ");
+
+    if (!judul && !isi) {
+      alert("Judul dan Isi tidak boleh kosong");
+      return;
+    } else if (!judul ) {
+      alert("Judul tidak boleh kosong");
+      return;
+    } else if (!isi ) {
+      alert("Isi tidak boleh kosong");
+      return;
+    } else{
+      alert("Form terisi");
+      
+    }
+
+    const li = document.createElement("li");
+    li.classList.add("list-items");
+
+    li.innerHTML = `
+      <input type="checkbox" class="checkbox" />
+      <h1 class="judul">${judul}</h1>
+      <p class="catat">${isi}</p>
+      <span class="list-date">${date}</span>
+    `;
+
+    listItem.appendChild(li);
+
+    // Reset input form
+    judulNote.value = "";
+    isiNote.value = "";
+
+    // Tutup modal
+    modal.style.display = "none";
+  });
+
+  // Fungsi tekan lama untuk masuk mode pemilihan
+  listItem.addEventListener("mousedown", (event) => {
+    const target = event.target.closest(".list-items");
+    if (!target) return;
+
+    longPressTimer = setTimeout(() => {
+      enableSelectionMode();
+    }, 1000); // 1 detik untuk mendeteksi tekan lama
+  });
+
+  listItem.addEventListener("mouseup", () => {
+    clearTimeout(longPressTimer);
+  });
+
+  listItem.addEventListener("mouseleave", () => {
+    clearTimeout(longPressTimer);
+  });
+
+  // Fungsi untuk mengaktifkan mode pemilihan
+  function enableSelectionMode() {
+    const checkboxes = document.querySelectorAll(".checkbox");
+    checkboxes.forEach((checkbox) => {
+      checkbox.style.display = "flex";
+    });
+
+    selectAllContainer.style.display = "flex";
+    actionButtons.style.display = "flex";
   }
+
+  // Fungsi untuk keluar dari mode pemilihan
+  cancelSelectionBtn.addEventListener("click", disableSelectionMode);
+
+  function disableSelectionMode() {
+    const checkboxes = document.querySelectorAll(".checkbox");
+    checkboxes.forEach((checkbox) => {
+      checkbox.style.display = "none";
+      checkbox.checked = false;
+    });
+
+    selectAllContainer.style.display = "none";
+    actionButtons.style.display = "none";
+    selectAllCheckbox.checked = false;
+  }
+
+  // Fungsi untuk "Pilih Semua"
+  selectAllCheckbox.addEventListener("change", (e) => {
+    const checkboxes = document.querySelectorAll(".checkbox");
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = e.target.checked;
+    });
+  });
+
+  // Fungsi untuk tombol Reset
+  resetSelectionBtn.addEventListener("click", () => {
+    const checkboxes = document.querySelectorAll(".checkbox");
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+
+    selectAllCheckbox.checked = false;
+  });
+
+  // Fungsi untuk menghapus catatan yang dipilih
+  deleteSelectedBtn.addEventListener("click", () => {
+    const checkboxes = document.querySelectorAll(".checkbox");
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked) {
+        const li = checkbox.closest(".list-items");
+        li.remove();
+      }
+    });
+
+    disableSelectionMode();
+  });
 });
-
-
-// Create Note body 
-btnSubmit.addEventListener('click',saveItems);
-
-function saveItems() {
-  console.log('Klick');
-  
-  let li = document.createElement('li');
-  li.className = 'list-items';
-  const classLenght = document.querySelectorAll('.list-items').length;
-  li.id = classLenght + 1;
-
-  const h1 = document.createElement('h1');
-  h1.className = ('judul');
-  const judul = document.createTextNode(judulNote.value);
-  h1.appendChild(judul);
-  li.appendChild(h1);
-
-  const p = document.createElement('p');
-  p.className = ('catat');
-  const catat = document.createTextNode(isiNote.value);
-  p.appendChild(catat);
-  li.appendChild(p);
-
-
-  const dateDisplay = new Date()
-  const span = document.createElement('span');
-  span.className = ('date');
-  const date = document.createTextNode(dateDisplay.toLocaleString);
-  span.appendChild(date);
-  li.appendChild(span);
-
-  const lastId = document.getElementById(classLenght);
-  list.insertBefore(li,lastId)
-  judulNote.value = '';
-  isiNote.value = '';
-}

@@ -6,8 +6,9 @@
   box-sizing: border-box;
 }
 
+/* HEADER STYLING */
 .header {
-  margin: .2rem ;
+  margin: 0.2rem;
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -15,7 +16,7 @@
   color: #fff;
   padding: 1.5rem;
   text-shadow: 0 2px 5px #000000;
-  border-radius: 0.2rem;
+  border-radius: 0.5rem;
   box-shadow: 0 0 10px 5px #bfb8b8;
 }
 
@@ -24,47 +25,104 @@
   mix-blend-mode: multiply;
 }
 
-.list{
+/* MAIN CONTENT */
+/* .card {
+  display: flex;
+  flex-direction: column;
+} */
+
+.list {
+  /* order: 2; */
   display: flex;
   flex-direction: row;
   margin: 0.2rem;
-  padding: 1rem;
   flex-wrap: wrap;
-  flex-basis: 100%;
   gap: 1rem;
 }
 
 .list-items {
   background-color: #fff;
   box-shadow: 0 0 10px #bfbfbf;
+  border-radius: .5rem;
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 2rem;
   flex-basis: 100%;
   flex: 1;
-  gap: 2rem;
 }
 
-.date{
+.list-date {
   display: flex;
+  order: -1;
   align-self: flex-end;
   font-size: 8pt;
 }
 
-/* Button styling */
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin: 20px;
+/* CHECKBOX STYLING */
+input[type="checkbox"] {
+  width: 2rem;
+  height: 1.5rem;
 }
 
+.checkbox {
+  display: none;
+}
+
+
+/* ACTION BUTTONS */
+.action-btns {
+  display: flex;
+  padding: 1rem;
+  gap: 0.3rem;
+}
+
+.btn-aksi {
+  display: none;
+}
+
+ .btn-aksi.visible {
+  /* order: -1; */
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.select-all {
+  display: flex;
+  order: -1;
+  align-items: center;
+}
+
+.btn {
+  font-size: 12pt;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bolder;
+}
+
+.cancel-btn {
+  background-color: rgb(255, 255, 0);
+}
+
+.reset-btn {
+  background-color: #ff8800;
+  color: #fff;
+}
+
+.delete-btn {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+/* FLOATING BUTTON */
 .button {
   background: #0d00ff;
   padding: 0.5rem;
-  border-radius: 2rem;
+  border-radius: 0.5rem;
   position: fixed;
   bottom: 2rem;
   right: 2rem;
@@ -72,21 +130,23 @@ button {
   font-weight: bolder;
   cursor: pointer;
   color: #fff;
-  transition: 2s;
+  transition: 1s;
 }
 
 .button:hover {
-  background: conic-gradient(rgb(0, 0, 255), rgb(0, 255, 47), rgb(255, 106, 0));
-  color: radial-gradient(green, white);
+  transition-timing-function: linear;
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  color: #fff;
 }
 
-.judul-text {
-  margin: 1rem;
+.button:active {
+  background: conic-gradient(rgb(0, 0, 255), rgb(0, 255, 47), rgb(255, 106, 0));
 }
-/* Modal background */
+
+/* MODAL */
 .modal {
   display: none; /* Hidden by default */
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -95,61 +155,25 @@ button {
   z-index: 1000;
 }
 
-title {
-  background-color: #0d00ff;
-}
-
-/* Modal content box */
 .modal-content {
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-direction: column;
-  top: 50%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px 5px #000000;
   width: 80%;
   max-width: 500px;
   text-align: center;
-  box-shadow: 0 5px 10px 5px #000000;
   font-family: "Edu AU VIC WA NT Arrows", cursive;
-  font-optical-sizing: auto;
   font-weight: bolder;
-  font-style: normal;
   color: #0d00ff;
 }
 
-.label {
-  text-align: left;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-  margin-bottom: 2rem;
-}
-
-.input {
-  outline: none;
-  border-radius: 0.5rem;
-}
-
-.input-class {
-  border: 2px solid rgb(0, 4, 255);
-  padding: 0.5rem;
-}
-
-.text-area {
-  border: 2px solid rgb(0, 4, 255);
-  height: 100px;
-}
-
-/* Close button styling */
 .close {
   background-color: #ff0000;
   color: #fff;
@@ -163,20 +187,44 @@ title {
   cursor: pointer;
 }
 
-.btn-submit {
-  background-color: blue;
-  border-radius: 2rem;
+.form-group {
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.input-class {
+  border: 2px solid rgb(0, 4, 255);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.text-area {
+  border: 2px solid rgb(0, 4, 255);
+  height: 100px;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.btn-submit {
+  padding: 1rem;
+  background-color: blue;
+  border-radius: 1rem;
   align-self: center;
   border: none;
   color: #fff;
   font-family: "Times New Roman", Times, serif;
+  font-size: 12pt;
   font-weight: bolder;
   transition: 2s;
 }
 
 .btn-submit:hover {
-  transition-timing-function: ease;
   background: conic-gradient(blue, #000000);
   color: #ff0000;
 }
+
+/* RESPONSIVE DESIGN */
+
